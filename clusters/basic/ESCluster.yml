@@ -21,7 +21,10 @@ spec:
     podTemplate:
       metadata:
         labels:
-          scrape: es
+          app: es
+          role: all
+          logme: filebeat
+          scope: global
       spec:
         initContainers:
         - name: sysctl
