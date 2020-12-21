@@ -4,7 +4,7 @@ kind: Elasticsearch
 metadata:
   name: basic-cluster
 spec:
-  version: 7.9.3
+  version: 7.10.1
   nodeSets:
   - name: basic-node
     count: 3
