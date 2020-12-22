@@ -95,5 +95,7 @@ spec:
         - name: varlibdockercontainers
           hostPath:
             path: /var/lib/docker/containers
-
+        - name: varlibnutanixdockercontainers
+          hostPath:
+            path: /var/nutanix/docker/containers
 ...
