@@ -21,7 +21,7 @@ spec:
     podTemplate:
       metadata:
         labels:
-          app: es
+          app: elasticsearch
           role: all
           log-label: "true"
           scope: data

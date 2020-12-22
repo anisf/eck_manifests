@@ -23,19 +23,19 @@ spec:
     podTemplate:
       metadata:
         labels:
-          app: es
+          app: elasticsearch
           role: master
-          logme: true
+          log-label: "true"
           scope: global
       spec:
         initContainers:
-        - name: set max mmap
+        - name: sysctl
           securityContext:
             privileged: true
           command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
 
         ## Install S3 plugin => replace with elasticsearch image with plugin pre-installed, or change to offline install (zip)
-        - name: install S3 snapshot repository plugin
+        - name: s3-plugin
           command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-s3']
 
         containers:
@@ -67,9 +67,9 @@ spec:
     podTemplate:
       metadata:
         labels:
-          app: es
+          app: elasticsearch
           role: coordinator
-          logme: true
+          log-label: "true"
           scope: global
       spec:
         initContainers:
@@ -106,24 +106,24 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 5Gi
+            storage: 150Gi
         storageClassName: default-storageclass
     podTemplate:
       metadata:
         labels:
-          app: es
+          app: elasticsearch
           role: data
-          logme: true
+          log-label: "true"
           scope: global
       spec:
         initContainers:
-        - name: set max mmap
+        - name: sysctl
           securityContext:
             privileged: true
           command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
 
         ## Install S3 plugin => replace with elasticsearch image with plugin pre-installed, or change to offline install (zip)
-        - name: install S3 snapshot repository plugin
+        - name: s3-plugin
           command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-s3']
 
         containers:
@@ -150,24 +150,24 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 5Gi
+            storage: 150Gi
         storageClassName: default-storageclass
     podTemplate:
       metadata:
         labels:
-          app: es
+          app: elasticsearch
           role: ingest
-          logme: true
+          log-label: "true"
           scope: global
       spec:
         initContainers:
-        - name: set max mmap
+        - name: sysctl
           securityContext:
             privileged: true
           command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
 
         ## Install S3 plugin => replace with elasticsearch image with plugin pre-installed, or change to offline install (zip)
-        - name: install S3 snapshot repository plugin
+        - name: s3-plugin
           command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-s3']
 
         containers:

@@ -1,4 +1,5 @@
 ---
+
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
@@ -21,9 +22,9 @@ spec:
     podTemplate:
       metadata:
         labels:
-          app: es
+          app: elasticsearch
           role: all
-          logme: filebeat
+          log-label: "true"
           scope: global
       spec:
         initContainers:
