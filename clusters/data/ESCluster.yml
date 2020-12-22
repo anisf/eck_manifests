@@ -1,0 +1,77 @@
+---
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: data-cluster
+spec:
+  version: 7.10.1
+  nodeSets:
+  - name: node
+    count: 3
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+        storageClassName: default-storageclass
+    podTemplate:
+      metadata:
+        labels:
+          app: es
+          role: all
+          log-label: "true"
+          scope: data
+      spec:
+        initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+
+        ## Install S3 plugin => replace with elasticsearch image with plugin pre-installed, or change to offline install (zip)
+        - name: s3-plugin
+          command: ['sh', '-c', 'bin/elasticsearch-plugin install --batch repository-s3']
+
+        containers:
+        - name: elasticsearch
+          resources:
+            limits:
+              memory: "4Gi"
+              cpu: 2
+            requests:
+              memory: "4Gi"
+              cpu: 2
+          env:
+          - name: ES_JAVA_OPTS
+            value: "-Xms2g -Xmx2g"
+
+---
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana-monitoring
+spec:
+  version: 7.10.1
+  count: 1
+  elasticsearchRef:
+    name: data-cluster
+  podTemplate:
+    metadata:
+      labels:
+        labels:
+          app: kibana
+          log-label: "true"
+          scope: data
+    spec:
+      containers:
+      - name: kibana
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: 1
+
+...
