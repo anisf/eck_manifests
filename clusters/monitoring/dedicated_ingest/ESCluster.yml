@@ -1,4 +1,5 @@
 ---
+
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
@@ -50,6 +51,7 @@ spec:
           env:
           - name: ES_JAVA_OPTS
             value: "-Xms3g -Xmx3g"
+
   - name: coordinator
     count: 2
     config:
@@ -94,6 +96,7 @@ spec:
           env:
           - name: ES_JAVA_OPTS
             value: "-Xms3g -Xmx3g"
+
   - name: data
     count: 3
     config:
@@ -138,6 +141,7 @@ spec:
           env:
           - name: ES_JAVA_OPTS
             value: "-Xms4g -Xmx4g"
+
   - name: ingest
     count: 2
     config:

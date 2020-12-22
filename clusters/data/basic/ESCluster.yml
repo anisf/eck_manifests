@@ -1,4 +1,5 @@
 ---
+
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
@@ -48,30 +49,5 @@ spec:
           env:
           - name: ES_JAVA_OPTS
             value: "-Xms2g -Xmx2g"
-
----
-apiVersion: kibana.k8s.elastic.co/v1
-kind: Kibana
-metadata:
-  name: kibana-data
-spec:
-  version: 7.10.1
-  count: 1
-  elasticsearchRef:
-    name: data-cluster
-  podTemplate:
-    metadata:
-      labels:
-        labels:
-          app: kibana
-          log-label: "true"
-          scope: data
-    spec:
-      containers:
-      - name: kibana
-        resources:
-          limits:
-            memory: 1Gi
-            cpu: 1
 
 ...
