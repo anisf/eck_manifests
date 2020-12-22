@@ -11,17 +11,52 @@ spec:
   kibanaRef:
     name: kibana-monitoring
   config:
-    filebeat:
-      autodiscover:
-        providers:
-        - type: kubernetes
-          node: ${NODE_NAME}
-          hints:
-            enabled: true
-            default_config:
-              type: container
-              paths:
-              - /var/log/containers/*${data.kubernetes.container.id}.log
+    filebeat.autodiscover.providers:
+    - type: kubernetes
+      node: ${NODE_NAME}
+      hints:
+        enabled: true
+        default_config:
+          type: container
+          paths:
+          - /var/log/containers/*${data.kubernetes.container.id}.log
+
+      templates:
+      - condition.equals.kubernetes.labels.app: "mongodb"
+        config:
+        - module: mongodb
+          log.input:
+            type: container
+            paths: ["/var/log/containers/*${data.kubernetes.container.id}.log"]
+
+      - condition.equals.kubernetes.labels.app: "postgresql"
+        config:
+        - module: postgresql
+          log.input:
+            type: container
+            paths: ["/var/log/containers/*${data.kubernetes.container.id}.log"]
+
+      - condition.equals.kubernetes.labels.app: "redis"
+        config:
+        - module: redis
+          log.input:
+            type: container
+            paths: ["/var/log/containers/*${data.kubernetes.container.id}.log"]
+
+      - condition.equals.kubernetes.labels.app: "kafka"
+        config:
+        - module: kafka
+          log.input:
+            type: container
+            paths: ["/var/log/containers/*${data.kubernetes.container.id}.log"]
+
+      - condition.equals.kubernetes.labels.app: "kibana"
+        config:
+        - module: kibana
+          log.input:
+            type: container
+            paths: ["/var/log/containers/*${data.kubernetes.container.id}.log"]
+
     processors:
     - add_cloud_metadata: {}
     - add_host_metadata: {}
