@@ -79,6 +79,9 @@ spec:
             mountPath: /var/log/pods
           - name: varlibdockercontainers
             mountPath: /var/lib/docker/containers
+          - name: varlibnutanixdockercontainers
+            mountPath: /var/nutanix/docker/containers
+
           env:
             - name: NODE_NAME
               valueFrom:
