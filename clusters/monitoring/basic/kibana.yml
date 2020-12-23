@@ -12,10 +12,9 @@ spec:
   podTemplate:
     metadata:
       labels:
-        labels:
-          app: kibana
-          log-label: "true"
-          scope: data
+        app: kibana
+        log-label: "true"
+        scope: global
     spec:
       containers:
       - name: kibana
